@@ -28,7 +28,8 @@ class AIVP_Widget extends WP_Widget {
         $video = new WP_Query( array(
             'post_type' => 'aivp',
             'posts_per_page' => 1,
-            'orderby'   => 'date',
+            'meta_key'  => 'created-date',
+            'orderby'   => 'meta_value_num',
             'order'     => 'DESC',
         ) );
         if( $video->have_posts() ):

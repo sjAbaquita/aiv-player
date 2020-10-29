@@ -29,6 +29,15 @@
 	box-shadow: 0 0 3px #CACACA;
 	height: 100%;
 }
+.video-clips .aivp-card .aivp-thumbnail {
+	min-height: 188px;
+	border-bottom: solid 1px #444;
+}
+.video-clips .aivp-card h2{
+	padding: 6px 8px;
+	font-size: 14px;
+	color: #162955;
+}
 .video-clips .aivp-card p{
 	padding: 0px 15px;
 }
@@ -37,6 +46,7 @@
 }
 .video-clips .aivp-card img{
 	width: 100%;
+	height: 188px;
 	display: block;
 }
 
@@ -53,13 +63,24 @@
 		<h2 class="">Video Clips</h2>
 		<div class="aivp-row">
 			<?php
+			if( get_aivp_option( 'platform' ) == 'vimeo' ) {
 			   $args = array(
-				   'post_type' => 'aivp',
-				   'posts_per_page' => -1,
-				   'post_status' => 'publish',
-				   'orderby' => 'date',
-				   'order' => 'desc'
+					'post_type' => 'aivp',
+					'posts_per_page' => -1,
+					'post_status' => 'publish',
+					'meta_key'  => 'created-date',
+					'orderby'   => 'meta_value_num',
+					'order'     => 'DESC',
 			   );
+			} else {
+				$args = array(
+					'post_type' => 'aivp',
+					'posts_per_page' => -1,
+					'post_status' => 'publish',
+					'orderby'   => 'date',
+					'order'     => 'DESC',
+			   );
+			}
 			   
 			   $videos = new WP_Query( $args );
 			   
@@ -68,8 +89,11 @@
 			?>
 						<div class="aivp-column">
 							<a class="aivp-card" href="<?php echo the_permalink(); ?>">
-								<img src="<?php echo get_post_meta(get_the_ID(), 'thumbnail-url', true); ?>" alt="<?php echo the_title(); ?>">
-								<p><b><?php echo the_title(); ?> </b> - <span><?php echo strip_tags(get_the_content(), '<p>'); ?></span></p>
+								<div class="aivp-thumbnail">
+									<img src="<?php echo get_post_meta(get_the_ID(), 'thumbnail-url', true); ?>" alt="<?php echo the_title(); ?>">
+								</div>
+								<h2><b><?php echo the_title(); ?></b></h2>
+								<?php echo the_excerpt(  ); ?>
 							</a>
 						</div>
 			   <?php endwhile;

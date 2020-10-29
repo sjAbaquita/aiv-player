@@ -91,6 +91,8 @@ get_header(); ?>
     .what-to-watch .aivp-card img{
         width: 100%;
         display: block;
+        height: 138px;
+        border: #444 solid 1px;
     }
 
     @media(max-width: 900px){
@@ -145,7 +147,8 @@ get_header(); ?>
         <div class="content-container">
             <div class="aivp-content">
                 <h1 class="content-title"><?php echo the_title(); ?></h1>
-                <p><b><?php echo date("F jS, Y", strtotime(get_post_meta(get_the_ID(), "created-date", true))); ?> </b> - <span><?php echo strip_tags(get_the_content(), '<p>'); ?></span> </p>
+                <p><b><?php echo date("F jS, Y", strtotime(get_post_meta(get_the_ID(), "created-date", true))); ?> </b></p>
+                <div style="margin:10px 0px;"><?php echo the_content(); ?></div>
                 <div class="aivp-social-icons">
                     <a href="http://www.facebook.com/sharer.php?u=<?php echo get_permalink( get_the_ID() ); ?>"><img src="https://cdn.iconscout.com/icon/free/png-512/facebook-262-721949.png" alt=""></a>
                     <a href="https://twitter.com/intent/tweet?text=<?php echo the_title(); ?>&url=<?php echo get_permalink( get_the_ID() ); ?>"><img src="https://cdn.iconscout.com/icon/free/png-512/twitter-241-721979.png" alt=""></a>
@@ -156,14 +159,26 @@ get_header(); ?>
     
 
     <?php
+    if( get_aivp_option( 'platform' ) == 'vimeo' ) {
         $args = array(
             'post_type' => 'aivp',
             'numberposts' => -1,
             'post_status' => 'publish',
             'exclude' => array( get_the_ID() ),
-            'orderby' => 'date',
-            'sort_order' => 'desc'
+            'meta_key'  => 'created-date',
+            'orderby'   => 'meta_value_num',
+            'order'     => 'DESC',
         );
+    } else {
+        $args = array(
+            'post_type' => 'aivp',
+            'numberposts' => -1,
+            'post_status' => 'publish',
+            'exclude' => array( get_the_ID() ),
+            'orderby'   => 'date',
+            'order'     => 'DESC',
+        );
+    }
 
         $clips = get_posts( $args );
         // echo json_encode($clips);

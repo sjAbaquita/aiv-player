@@ -1,6 +1,8 @@
 <?php
 
 include_once( AIVP_PATH . 'includes/classes/sync-aivp.php' );
+include_once( AIVP_PATH . 'includes/classes/AIVP-Vimeo.php' );
+include_once( AIVP_PATH . 'vendor/vimeo/vimeo-api/autoload.php' );
 
 function sync_wistia( $data ) {
     
@@ -8,14 +10,31 @@ function sync_wistia( $data ) {
 
     if( get_aivp_option( 'platform' ) == 'wistia' ) :
         if( get_aivp_option( 'wistia_access_token' ) ) :
-            $videos = $aivp->get_videos( get_aivp_option( 'wistia_access_token' ), 'api' );
+            if( get_aivp_option( 'wistia_project_id' ) ) :
+                $videos = $aivp->get_project_videos( get_aivp_option( 'wistia_access_token' ), get_aivp_option( 'wistia_project_id' ) );
+            else :
+                $videos = $aivp->get_videos( get_aivp_option( 'wistia_access_token' ), 'api' );
+            endif;
         elseif( get_aivp_option( 'wistia_salesforce_endpoint' ) ) :
             $videos = $aivp->get_videos( get_aivp_option( 'wistia_salesforce_endpoint' ) );
         else :
             return 'Failed! The endpoint or the access token must not be empty.';
         endif;
     elseif( get_aivp_option( 'platform' ) == 'vimeo' ) :
-        $videos = $aivp->get_videos( get_aivp_option( 'vimeo_salesforce_endpoint' ) );
+        if(empty(get_aivp_option( 'vimeo_salesforce_endpoint' ))) :
+            $client = array(
+                "client_id" => get_aivp_option( 'vimeo_client_id' ),
+                "client_secret" => get_aivp_option( 'vimeo_secret_key' )
+            );
+            // $vimeo = new AIVP_Vimeo();
+            $vimeo = new \Vimeo\Vimeo(get_aivp_option( 'vimeo_client_id' ), get_aivp_option( 'vimeo_secret_key' ));
+            $vimeo->setToken(get_aivp_option( 'vimeo_token' ));
+
+            $response = $vimeo->request('/me/videos', [], 'GET')['body'];
+            $videos = $aivp->set_data($response['data']);
+        else :
+            $videos = $aivp->get_videos( get_aivp_option( 'vimeo_salesforce_endpoint' ) );
+        endif;
     endif;
     
     if( $aivp->upload_videos( $videos ) ) {

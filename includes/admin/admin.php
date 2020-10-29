@@ -120,11 +120,37 @@ if ( ! class_exists( 'AIVP_Options' ) ) {
 					unset( $options['wistia_access_token'] ); // Remove from options if empty
 				}
 
+				// Wistia Project ID
+				if ( ! empty( $options['wistia_project_id'] ) ) {
+					$options['wistia_project_id'] = sanitize_text_field( $options['wistia_project_id'] );
+				} else {
+					unset( $options['wistia_project_id'] ); // Remove from options if empty
+				}
+
 				// Vimeo Salesforce Endpoint
 				if ( ! empty( $options['vimeo_salesforce_endpoint'] ) ) {
 					$options['vimeo_salesforce_endpoint'] = sanitize_text_field( $options['vimeo_salesforce_endpoint'] );
 				} else {
 					unset( $options['vimeo_salesforce_endpoint'] ); // Remove from options if empty
+				}
+
+				// Vimeo Client ID
+				if ( ! empty( $options['vimeo_client_id'] ) ) {
+					$options['vimeo_client_id'] = sanitize_text_field( $options['vimeo_client_id'] );
+				} else {
+					unset( $options['vimeo_client_id'] ); // Remove from options if empty
+				}
+				// Vimeo Client Secret
+				if ( ! empty( $options['vimeo_secret_key'] ) ) {
+					$options['vimeo_secret_key'] = sanitize_text_field( $options['vimeo_secret_key'] );
+				} else {
+					unset( $options['vimeo_secret_key'] ); // Remove from options if empty
+				}
+				// Vimeo Client Token
+				if ( ! empty( $options['vimeo_token'] ) ) {
+					$options['vimeo_token'] = sanitize_text_field( $options['vimeo_token'] );
+				} else {
+					unset( $options['vimeo_token'] ); // Remove from options if empty
 				}
 
 				// Page Slug
@@ -177,6 +203,7 @@ if ( ! class_exists( 'AIVP_Options' ) ) {
 								<td>
 									<?php $value = self::get_aivp_option( 'wistia_salesforce_endpoint' ); ?>
 									<input type="text" name="aivp_options[wistia_salesforce_endpoint]" value="<?php echo esc_attr( $value ); ?>" style="width: 50%">
+									<p><em>Or use this alternative.</em></p>
 								</td>
 							</tr>
 							<tr valign="top">
@@ -184,7 +211,9 @@ if ( ! class_exists( 'AIVP_Options' ) ) {
 								<td>
 									<?php $value = self::get_aivp_option( 'wistia_access_token' ); ?>
 									<input type="text" name="aivp_options[wistia_access_token]" value="<?php echo esc_attr( $value ); ?>" style="width: 50%">
-									<p><em>Or use this alternative.</em></p>
+									<p><em>If you want to get all medias on specific project. Add project hashed id below.</em></p>
+									<?php $project = self::get_aivp_option( 'wistia_project_id' ); ?>
+									<input type="text" name="aivp_options[wistia_project_id]" value="<?php echo esc_attr( $project ); ?>" style="width: 50%">
 								</td>
 							</tr>
 						<?php endif; ?>
@@ -194,6 +223,23 @@ if ( ! class_exists( 'AIVP_Options' ) ) {
 								<td>
 									<?php $value = self::get_aivp_option( 'vimeo_salesforce_endpoint' ); ?>
 									<input type="text" name="aivp_options[vimeo_salesforce_endpoint]" value="<?php echo esc_attr( $value ); ?>" style="width: 50%">
+								</td>
+							</tr>
+
+							<tr valign="top">
+								<th scope="row"><?php esc_html_e( 'Or use this alternative.', 'aivp' ); ?></th>
+								<td>
+									<?php $client_id = self::get_aivp_option( 'vimeo_client_id' ); ?>
+									<p><em>Client Id</em></p>
+									<input type="text" name="aivp_options[vimeo_client_id]" value="<?php echo esc_attr( $client_id ); ?>" style="width: 50%">
+
+									<?php $client_secret = self::get_aivp_option( 'vimeo_secret_key' ); ?>
+									<p><em>Client Secret</em></p>
+									<input type="text" name="aivp_options[vimeo_secret_key]" value="<?php echo esc_attr( $client_secret ); ?>" style="width: 50%">
+
+									<?php $client_token = self::get_aivp_option( 'vimeo_token' ); ?>
+									<p><em>Client Token</em></p>
+									<input type="text" name="aivp_options[vimeo_token]" value="<?php echo esc_attr( $client_token ); ?>" style="width: 50%">
 								</td>
 							</tr>
 						<?php endif; ?>
