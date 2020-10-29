@@ -4,7 +4,7 @@
  */
 /*
 Plugin Name: ArchIntel Video Player
-Plugin URI: 
+Plugin URI: https://github.com/sjAbaquita/aiv-player
 Description: Video player for Vimeo and Wistia API
 Version: 1.0.0
 Author: Seth
