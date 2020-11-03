@@ -1,5 +1,7 @@
 <?php
 
+include_once( AIVP_PATH . 'includes/classes/salesforce.php' );
+
 class Sync_AIVP {
     
     function get_videos( $endpoint, $api=NULL ) {
@@ -154,6 +156,8 @@ class Sync_AIVP {
     }
 
     function upload_videos( $videos ) {
+
+        $sf = new AIVPSalesforce();
         
         foreach( $videos as $key => $video ) {
             $post = array(
@@ -178,12 +182,13 @@ class Sync_AIVP {
             
             if (empty($old_video)){
                 $id_video = wp_insert_post($post);
-                update_post_meta($id_video, "salesforce-id", $video["SALESFORCE_ID"]);
+                //add to salesforce if new
+                $sf_id = $sf->upload_video( $video );
             } else {
                 $id_video = $old_video[0]->ID;
             }
 
-            update_post_meta($id_video, "salesforce-id", $video["SALESFORCE_ID"]);
+            update_post_meta($id_video, "salesforce-id", ($sf_id ? $sf_id : $video["SALESFORCE_ID"]));
             update_post_meta($id_video, "video-id", $video["VIDEO_ID"]);
             update_post_meta($id_video, "hashed-id", $video["HASHED_ID"]);
             update_post_meta($id_video, "platform", $video["PLATFORM"]);
