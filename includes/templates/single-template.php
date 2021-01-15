@@ -140,7 +140,12 @@ get_header(); ?>
 
                 <iframe src="https://player.vimeo.com/video/<?php echo get_post_meta(get_the_ID(), "video-id", true); ?>?autoplay=1" width="640" height="354" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
-            <?php endif; ?>
+            <?php endif;
+            if( get_post_meta(get_the_ID(), "platform", true) == 'youtube' ) : ?>
+
+                <iframe width="1280" height="720" src="https://www.youtube.com/embed/<?php echo get_post_meta(get_the_ID(), "video-id", true); ?>?autoplay=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            <?php endif;?>
 
             <input type="button" id="btn-player" value="Enlarge Player">
         </div>
@@ -156,7 +161,6 @@ get_header(); ?>
             </div>
         </div>
     </div>
-    
 
     <?php
     if( get_aivp_option( 'platform' ) == 'vimeo' ) {

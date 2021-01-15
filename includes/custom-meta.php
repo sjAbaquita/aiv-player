@@ -26,6 +26,14 @@ function custom_meta_box_markup($object)
 
             <label for="salesforce-id"><b>Salesforce Id</b></label> <br />
             <input name="salesforce-id" type="text" value="<?php echo get_post_meta($object->ID, "salesforce-id", true); ?>" style="width: 100%;">
+            
+            <br />
+            <br />
+
+            <label for="video-tags"><b>Tags</b></label> <br />
+            <textarea id="video-tags" name="video-tags" rows="4" style="width: 100%; height: 20%;">
+                <?php echo get_post_meta($object->ID, "video-tags", true); ?>
+            </textarea>
 
             <br />
             <br />
@@ -77,6 +85,7 @@ function save_custom_meta_box($post_id, $post, $update)
     $platform_value = "";
     $video_id_value = "";
     $video_hashedId_value = "";
+    $video_tags = "";
     $salesforce_id_value = "";
     $thumbnail_url_value = "";
     $created_date_value = "";
@@ -110,6 +119,12 @@ function save_custom_meta_box($post_id, $post, $update)
         $salesforce_id_value = $_POST["salesforce-id"];
     }   
     update_post_meta($post_id, "salesforce-id", $salesforce_id_value);
+
+    if(isset($_POST["video-tags"]))
+    {
+        $video_tags = $_POST["video-tags"];
+    }   
+    update_post_meta($post_id, "salesforce-id", $video_tags);
 
     if(isset($_POST["thumbnail-url"]))
     {

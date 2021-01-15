@@ -57,6 +57,9 @@ class AIVP_Widget extends WP_Widget {
                     <iframe src="https://player.vimeo.com/video/<?php echo get_post_meta(get_the_ID(), "video-id", true); ?>?autoplay=1" width="640" height="354" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
             <?php endif;
+                if( get_post_meta(get_the_ID(), "platform", true) == 'youtube' ) : ?>
+                    <iframe width="1280" height="720" src="https://www.youtube.com/embed/<?php echo get_post_meta(get_the_ID(), "video-id", true); ?>?autoplay=1&rel=0&version=3&enablejsapi=1&showinfo=0&controls=0&disablekb=1&iv_load_policy=3&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <?php endif; 
             endwhile;
 
             wp_reset_postdata(); ?>

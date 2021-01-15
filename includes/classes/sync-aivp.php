@@ -186,6 +186,15 @@ class Sync_AIVP {
                 $sf_id = $sf->upload_video( $video );
             } else {
                 $id_video = $old_video[0]->ID;
+                // Update video
+                $update_video = array(
+                    'ID'           => $id_video,
+                    'post_title'   => wp_strip_all_tags( $video['TITLE'] ),
+                    'post_content' => $video["DESCRIPTION"],
+                );
+
+                // Update the video into the database
+                wp_update_post( $update_video );
             }
 
             update_post_meta($id_video, "salesforce-id", ($sf_id ? $sf_id : $video["SALESFORCE_ID"]));
